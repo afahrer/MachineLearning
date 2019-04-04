@@ -20,7 +20,7 @@ imputer = SimpleImputer(missing_values=np.nan, strategy='mean')
 imputer = imputer.fit(x[:, 1:3])
 x[:, 1:3] = imputer.transform(x[:, 1:3])
 
-# Turn country strings into numeric values
+# Turn country strings into numeric values, three columns of 1's and 0's
 ct = ColumnTransformer([('Country', OneHotEncoder(), [0])], remainder='passthrough')
 x = np.array(ct.fit_transform(x), dtype=np.float)
 
