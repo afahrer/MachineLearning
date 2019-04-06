@@ -19,13 +19,15 @@ for i in range(0, length):
 m = sum1 / sum2
 # b is the Y Intercept
 b = meany - (m * meanx)
+
+# Get Y values using y = mx + b formula
 prediction = []
 for i in range(0, length):
     prediction.append(m * X[i] + b)
 
 print("\nmy results")
 print("Slope :", m, "\nIntercept", b)
-print("Predications\n", prediction)
+print("Predictions\n", prediction)
 
 # Using LinearRegression from sklearn
 from sklearn.linear_model import LinearRegression
@@ -35,7 +37,7 @@ model.fit(X1, Y)
 
 print("\nsklean results")
 print("Slope :", model.coef_, "\nIntercept", model.intercept_)
-print("Predications\n", model.predict(X1))
+print("Predictions\n", model.predict(X1))
 
 
 
