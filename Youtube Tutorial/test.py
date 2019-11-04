@@ -15,10 +15,6 @@ x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(x, y
 linear = linear_model.LinearRegression()
 linear.fit(x_train, y_train)
 acc = linear.score(x_test, y_test)
-#print(acc)
-
-#print(linear.coef_)
-#print(linear.intercept_)
 
 predictions = linear.predict(x_test)
 

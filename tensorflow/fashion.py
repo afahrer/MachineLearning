@@ -1,7 +1,6 @@
 # Programmer: Adam Fahrer
 # Purpose: To build a Model that predict what type of clothing is in a given image 
 
-import tensorflow as tf
 from tensorflow import keras
 import numpy as np
 import matplotlib.pyplot as plt
