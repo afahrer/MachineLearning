@@ -10,7 +10,7 @@ print("Stock Name")
 stock = input()
 
 print("Date DD-MM-YYYY")
-predict_date = input() + ' 12:00:00'
+predict_date = input() + ' 00:00:00'
 predict_date = datetime.strptime(predict_date, "%d-%m-%Y %H:%M:%S")
 predict_date = time.mktime(predict_date.timetuple())
 # Configure API key
@@ -19,10 +19,10 @@ configuration = finnhub.Configuration(
         'token': 'bs528mvrh5rb6mgkdcu0'
     })
 
-MIN_DATE = 946684800.0
-MAX_DATE = 1893456000.0
+MIN_DATE = 946684800
+MAX_DATE = 1893456000
 finnhub_client = finnhub.DefaultApi(finnhub.ApiClient(configuration))
-prices = finnhub_client.stock_candles(stock, 'D', int(MIN_DATE) , int(time.time()))
+prices = finnhub_client.stock_candles(stock, '1', MIN_DATE , MAX_DATE)
 
 # pre process the data
 BATCH_SIZE = 64
@@ -41,23 +41,22 @@ train_price = array[TEST_SIZE:,0]
 test_date = array[:TEST_SIZE,1]
 test_price = array[:TEST_SIZE,0]
 
-x_val = train_date[-VALIDATE_SIZE:]
-y_val = train_price[-VALIDATE_SIZE:]
-train_date = train_date[:-VALIDATE_SIZE]
-train_price = train_price[:-VALIDATE_SIZE]
-
-print(f'Lengths, train: {len(train_price)} test {len(test_price)} val {len(x_val)}')
+x_val = train_date[VALIDATE_SIZE:]
+y_val = train_price[VALIDATE_SIZE:]
+train_date = train_date[:VALIDATE_SIZE]
+train_price = train_price[:VALIDATE_SIZE]
 
 model = tf.keras.Sequential([
     tf.keras.layers.Input(shape=(1,), name='date'),
-    tf.keras.layers.Dense(128,activation='relu'),
-    tf.keras.layers.Dense(128,activation='relu'),
+    tf.keras.layers.Dense(256,activation='relu'),
+    tf.keras.layers.Dense(256,activation='relu'),
+    tf.keras.layers.Dense(256,activation='relu'),
+    tf.keras.layers.Dense(256,activation='relu'),
     tf.keras.layers.Dense(1, activation='linear')
 ])
 
 model.compile(optimizer='adam', loss='mean_squared_error')
-
-model.fit(train_date,train_price,epochs=10,
+model.fit(train_date,train_price,epochs=20,
           batch_size=BATCH_SIZE,
           validation_data=(x_val,y_val))
 
